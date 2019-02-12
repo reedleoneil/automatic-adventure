@@ -1,0 +1,16 @@
+<html>
+	<head>
+		<script src="mqtt.js"></script>
+		<script src="mqttws31.js"></script>
+	</head>
+	<body>
+		<script>
+			var client = mqtt.connect("ws://localhost:1884");
+			client.subscribe("lailanie");
+
+			client.on("message", function (topic, payload) {
+				alert([topic, payload].join(": "));
+			})
+		</script>
+	</body>
+</html>
