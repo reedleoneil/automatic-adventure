@@ -1,8 +1,8 @@
 #include <SPI.h>
 #include <MFRC522.h>
 
-#define SS_PIN 53
-#define RST_PIN 49
+#define SS_PIN 10
+#define RST_PIN 9
 MFRC522 mfrc522(SS_PIN, RST_PIN);  // Create MFRC522 instance.
 
 int pinInductiveSensor = A0;
@@ -21,8 +21,8 @@ void loop() {
   int sensorReading = analogRead(pinInductiveSensor);
   readRFID();
   
-  if (!isTrafficLightRed && sensorReading == 0)
-    Serial.println("{\"trafficLight\": " + String(isTrafficLightRed) + ", \"lane\": " + String(isTrafficLightRed)  + ", \"rfid\": \"" + String(rfid) +"\"}");
+  //if (!isTrafficLightRed && sensorReading != 1023)
+    Serial.println("{\"trafficLight\": " + String(2) + ", \"lane\": " + String(1)  + ", \"rfid\": \"" + String(rfid) +"\", \"isTrafficLightRed\": " + String(isTrafficLightRed) + ", \"sensorReading\": " + String(sensorReading) + "}");
   delay(1000);
 }
 
