@@ -2,15 +2,106 @@
 	<head>
 		<script src="mqtt.js"></script>
 		<script src="mqttws31.js"></script>
+		<script src="jquery.js"></script>
+		<script src="bootstrap.js"></script>
+ 		<link rel="stylesheet" type="text/css" href="bootstrap.css">
 	</head>
 	<body>
 		<script>
-			var client = mqtt.connect("ws://localhost:1884");
-			client.subscribe("lailanie");
+			var client1 = mqtt.connect("ws://192.168.1.100:1884");
+			client1.subscribe("lailanie");
 
-			client.on("message", function (topic, payload) {
-				alert([topic, payload].join(": "));
+			client1.on("message", function (topic, payload) {
+				console.log([topic, payload].join(": "));
+				var payload = JSON.parse(payload);
+				if (payload.lane == 1)
+					$("#img-t1-l1").attr("src", payload.image);
+				else if (payload.lane == 2)
+					$("#img-t1-l2").attr("src", payload.image);
+			})
+
+			var client2 = mqtt.connect("ws://192.168.1.101:1884");
+			client2.subscribe("lailanie");
+
+			client2.on("message", function (topic, payload) {
+				console.log([topic, payload].join(": "));
+				var payload = JSON.parse(payload);
+				if (payload.lane == 1)
+					$("#img-t2-l1").attr("src", payload.image);
+				else if (payload.lane == 2)
+					$("#img-t2-l2").attr("src", payload.image);
 			})
 		</script>
+
+		<div class="container">
+			<div class="row">
+				<div class="col-md-4">
+					<h4>Traffic Light 1</h4>
+					<div class="row">
+						<div class="col-md-12">
+							<img id="img-t1-l1"></img>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<img id="img-t1-l2"></img>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<h4>Traffic Light 2</h4>
+					<div class="row">
+						<div class="col-md-12">
+							<img id="img-t2-l1"></img>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<img id="img-t2-l2"></img>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<h4>Traffic Light 3</h4>
+					<div class="row">
+						<div class="col-md-12">
+							<img id="img-t3-l1"></img>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<img id="img-t3-l2"></img>
+						</div>
+					</div>
+				</div>
+			</div>
+			<h4>Violations</h4>
+			<table class="table">
+			    <thead>
+			      <tr>
+				<th>Firstname</th>
+				<th>Lastname</th>
+				<th>Email</th>
+			      </tr>
+			    </thead>
+			    <tbody>
+			      <tr>
+				<td>John</td>
+				<td>Doe</td>
+				<td>john@example.com</td>
+			      </tr>
+			      <tr>
+				<td>Mary</td>
+				<td>Moe</td>
+				<td>mary@example.com</td>
+			      </tr>
+			      <tr>
+				<td>July</td>
+				<td>Dooley</td>
+				<td>july@example.com</td>
+			      </tr>
+			    </tbody>
+		</table>
+		</div>
 	</body>
 </html>
