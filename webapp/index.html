@@ -4,33 +4,132 @@
 		<script src="mqttws31.js"></script>
 		<script src="jquery.js"></script>
 		<script src="bootstrap.js"></script>
+		<script src="lto.js"></script>
  		<link rel="stylesheet" type="text/css" href="bootstrap.css">
+		<style>
+			h4 {
+				text-align: center;
+				font-weight: bolder;
+			}
+		</style>
 	</head>
 	<body>
 		<script>
-			var client1 = mqtt.connect("ws://192.168.1.100:1884");
-			client1.subscribe("lailanie");
+			var raspberrypi1 = mqtt.connect("ws://192.168.1.100:1884");
+			raspberrypi1.subscribe("lailanie");
 
-			client1.on("message", function (topic, payload) {
-				console.log([topic, payload].join(": "));
+			raspberrypi1.on("message", function (topic, payload) {
+				//console.log([topic, payload].join(": "));
 				var payload = JSON.parse(payload);
-				if (payload.lane == 1)
+				if (payload.rfid != "")
+				if (payload.lane == 1) {
 					$("#img-t1-l1").attr("src", payload.image);
-				else if (payload.lane == 2)
+					$("#rfid-t1-l1").text(payload.rfid);
+					for (var x in lto) {
+ 						if (lto[x].rfid.trim() == payload.rfid.trim()) {
+							$("#plate-t1-l1").text(lto[x].plate);
+							$("#owner-t1-l1").text(lto[x].owner);
+							insertRow(payload.rfid.trim(), lto[x].plate, lto[x].makeModel, lto[x].owner, lto[x].address, lto[x].contact, payload.image);
+						}
+					}
+				} else if (payload.lane == 2) {
 					$("#img-t1-l2").attr("src", payload.image);
+					$("#rfid-t1-l2").text(payload.rfid);
+					for (var x in lto) {
+ 						if (lto[x].rfid.trim() == payload.rfid.trim()) {
+							$("#plate-t1-l2").text(lto[x].plate);
+							$("#owner-t1-l2").text(lto[x].owner);
+							insertRow(payload.rfid.trim(), lto[x].plate, lto[x].makeModel, lto[x].owner, lto[x].address, lto[x].contact, payload.image);
+						}
+					}
+				}
 			})
 
-			var client2 = mqtt.connect("ws://192.168.1.101:1884");
-			client2.subscribe("lailanie");
+			var raspberrypi2 = mqtt.connect("ws://192.168.1.101:1884");
+			raspberrypi2.subscribe("lailanie");
 
-			client2.on("message", function (topic, payload) {
-				console.log([topic, payload].join(": "));
+			raspberrypi2.on("message", function (topic, payload) {
+				//console.log([topic, payload].join(": "));
 				var payload = JSON.parse(payload);
-				if (payload.lane == 1)
+				if (payload.rfid != "")
+				if (payload.lane == 1) {
 					$("#img-t2-l1").attr("src", payload.image);
-				else if (payload.lane == 2)
+					$("#rfid-t2-l1").text(payload.rfid);
+					for (var x in lto) {
+ 						if (lto[x].rfid.trim() == payload.rfid.trim()) {
+							$("#plate-t2-l1").text(lto[x].plate);
+							$("#owner-t2-l1").text(lto[x].owner);
+							insertRow(payload.rfid.trim(), lto[x].plate, lto[x].makeModel, lto[x].owner, lto[x].address, lto[x].contact, payload.image);
+						}
+					}
+				} else if (payload.lane == 2) {
 					$("#img-t2-l2").attr("src", payload.image);
+					$("#rfid-t2-l2").text(payload.rfid);
+					for (var x in lto) {
+ 						if (lto[x].rfid.trim() == payload.rfid.trim()) {
+							$("#plate-t2-l2").text(lto[x].plate);
+							$("#owner-t2-l2").text(lto[x].owner);
+							insertRow(payload.rfid.trim(), lto[x].plate, lto[x].makeModel, lto[x].owner, lto[x].address, lto[x].contact, payload.image);
+						}
+					}
+				}
 			})
+
+			var raspberrypi3 = mqtt.connect("ws://192.168.1.102:1884");
+			raspberrypi3.subscribe("lailanie");
+
+			raspberrypi3.on("message", function (topic, payload) {
+				//console.log([topic, payload].join(": "));
+				var payload = JSON.parse(payload);
+				if (payload.rfid != "")
+				if (payload.lane == 1) {
+					$("#img-t3-l1").attr("src", payload.image);
+					$("#rfid-t3-l1").text(payload.rfid);
+					for (var x in lto) {
+ 						if (lto[x].rfid.trim() == payload.rfid.trim()) {
+							$("#plate-t3-l1").text(lto[x].plate);
+							$("#owner-t3-l1").text(lto[x].owner);
+							insertRow(payload.rfid.trim(), lto[x].plate, lto[x].makeModel, lto[x].owner, lto[x].address, lto[x].contact, payload.image);
+						}
+					}
+				} else if (payload.lane == 2) {
+					$("#img-t3-l2").attr("src", payload.image);
+					$("#rfid-t3-l2").text(payload.rfid);
+					for (var x in lto) {
+ 						if (lto[x].rfid.trim() == payload.rfid.trim()) {
+							$("#plate-t3-l2").text(lto[x].plate);
+							$("#owner-t3-l2").text(lto[x].owner);
+							insertRow(payload.rfid.trim(), lto[x].plate, lto[x].makeModel, lto[x].owner, lto[x].address, lto[x].contact, payload.image);
+						}
+					}
+				}
+			})
+
+			function insertRow(rfid, plate, makeModel, owner, address, contact, image) {
+				$("#tbody-violations").prepend(
+					"<tr>" +
+					"<td>" + rfid + "</td>" +
+					"<td>" + plate + "</td>" +
+					"<td>" + makeModel + "</td>" +
+					"<td>" + owner + "</td>" +
+					"<td>" + address + "</td>" +
+					"<td>" + contact + "</td>" +
+					"<td>" + getTimeStamp() + "</td>" +
+					"<td><a href='" + image + "' target='_blank'>View</a></td>" +
+			      		"</tr>"
+				);
+			}
+
+			function getTimeStamp() {
+				var currentdate = new Date(); 
+				var datetime = currentdate.getDate() + "/" + 
+				(currentdate.getMonth()+1) + "/" + 
+				currentdate.getFullYear() + " " + 
+				currentdate.getHours() + ":" + 
+				currentdate.getMinutes() + ":" + 
+				currentdate.getSeconds();
+				return datetime;
+			}
 		</script>
 
 		<div class="container">
@@ -39,12 +138,30 @@
 					<h4>Traffic Light 1</h4>
 					<div class="row">
 						<div class="col-md-12">
-							<img id="img-t1-l1"></img>
+							<div class="row">
+								<div class="col-md-4"><img id="img-t1-l1" width="120" height="100"></img></div>
+								<div class="col-md-8">
+									<ul class="list-group">
+										<li class="list-group-item">RFID: <span id="rfid-t1-l1"></span></li>
+										<li class="list-group-item">Plate: <span id="plate-t1-l1"></span></li>
+									  <li class="list-group-item">Owner: <span id="owner-t1-l1"></span></li>
+									</ul>
+								</div>
+							</div>
 						</div>
 					</div>
 					<div class="row">
 						<div class="col-md-12">
-							<img id="img-t1-l2"></img>
+							<div class="row">
+								<div class="col-md-4"><img id="img-t1-l2" width="120" height="100"></img></div>
+								<div class="col-md-8">
+									<ul class="list-group">
+										<li class="list-group-item">RFID: <span id="rfid-t1-l2"></span></li>
+										<li class="list-group-item">Plate: <span id="plate-t1-l2"></span></li>
+										<li class="list-group-item">Owner: <span id="owner-t1-l2"></span></li>
+									</ul>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -52,12 +169,30 @@
 					<h4>Traffic Light 2</h4>
 					<div class="row">
 						<div class="col-md-12">
-							<img id="img-t2-l1"></img>
+							<div class="row">
+								<div class="col-md-4"><img id="img-t2-l1" width="120" height="100"></img></div>
+								<div class="col-md-8">
+									<ul class="list-group">
+										<li class="list-group-item">RFID: <span id="rfid-t2-l1"></span></li>
+										<li class="list-group-item">Plate: <span id="plate-t2-l1"></span></li>
+										<li class="list-group-item">Owner: <span id="owner-t2-l1"></span></li>
+									</ul>
+								</div>
+							</div>
 						</div>
 					</div>
 					<div class="row">
 						<div class="col-md-12">
-							<img id="img-t2-l2"></img>
+							<div class="row">
+								<div class="col-md-4"><img id="img-t2-l2" width="120" height="100"></img></div>
+								<div class="col-md-8">
+									<ul class="list-group">
+										<li class="list-group-item">RFID: <span id="rfid-t2-l2"></span></li>
+										<li class="list-group-item">Plate: <span id="plate-t2-l2"></span></li>
+										<li class="list-group-item">Owner: <span id="owner-t2-l2"></span></li>
+									</ul>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -65,12 +200,30 @@
 					<h4>Traffic Light 3</h4>
 					<div class="row">
 						<div class="col-md-12">
-							<img id="img-t3-l1"></img>
+							<div class="row">
+								<div class="col-md-4"><img id="img-t3-l1" width="120" height="100"></img></div>
+								<div class="col-md-8">
+									<ul class="list-group">
+										<li class="list-group-item">RFID: <span id="rfid-t3-l1"></span></li>
+										<li class="list-group-item">Plate: <span id="plate-t3-l1"></span></li>
+										<li class="list-group-item">Owner: <span id="owner-t3-l1"></span></li>
+									</ul>
+								</div>
+							</div>
 						</div>
 					</div>
 					<div class="row">
 						<div class="col-md-12">
-							<img id="img-t3-l2"></img>
+							<div class="row">
+								<div class="col-md-4"><img id="img-t3-l2" width="120" height="100"></img></div>
+								<div class="col-md-8">
+									<ul class="list-group">
+										<li class="list-group-item">RFID: <span id="rfid-t3-l2"></span></li>
+										<li class="list-group-item">Plate: <span id="plate-t3-l2"></span></li>
+										<li class="list-group-item">Owner: <span id="owner-t3-l2"></span></li>
+									</ul>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -79,27 +232,27 @@
 			<table class="table">
 			    <thead>
 			      <tr>
-				<th>Firstname</th>
-				<th>Lastname</th>
-				<th>Email</th>
+				<th>RFID</th>
+				<th>PLATE #</th>
+				<th>MAKE/MODEL</th>
+				<th>OWNER</th>
+				<th>ADRESS</th>
+				<th>CONTACT #</th>
+				<th>DATETIME</th>
+				<th>IMAGE</th>
 			      </tr>
 			    </thead>
-			    <tbody>
-			      <tr>
-				<td>John</td>
-				<td>Doe</td>
-				<td>john@example.com</td>
-			      </tr>
-			      <tr>
-				<td>Mary</td>
-				<td>Moe</td>
-				<td>mary@example.com</td>
-			      </tr>
-			      <tr>
-				<td>July</td>
-				<td>Dooley</td>
-				<td>july@example.com</td>
-			      </tr>
+			    <tbody id="tbody-violations">
+			      <!--<tr>
+				<td>9a 23 b3 c1</td>
+				<td>XCS 4123</td>
+				<td>Honda Civic Type R 2019</td>
+				<td>Red Pascual</td>
+				<td>Minalin Pampanga</td>
+				<td>0916 362 4205</td>
+				<td>Feb 14, 2019 10:10 AM</td>
+				<td>Link</td>
+			      </tr>-->
 			    </tbody>
 		</table>
 		</div>
