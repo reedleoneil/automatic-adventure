@@ -21,8 +21,8 @@ void loop() {
   int sensorReading = analogRead(pinInductiveSensor);
   readRFID();
   
-  //if (!isTrafficLightRed && sensorReading != 1023)
-    Serial.println("{\"trafficLight\": " + String(2) + ", \"lane\": " + String(1)  + ", \"rfid\": \"" + String(rfid) +"\", \"isTrafficLightRed\": " + String(isTrafficLightRed) + ", \"sensorReading\": " + String(sensorReading) + "}");
+  Serial.println("{\"trafficLight\": " + String(3) + ", \"lane\": " + String(2)  + ", \"rfid\": \"" + String(rfid) +"\", \"isTrafficLightRed\": " + String(isTrafficLightRed) + ", \"sensorReading\": " + String(sensorReading) + "}");
+  rfid = "";
   delay(1000);
 }
 
