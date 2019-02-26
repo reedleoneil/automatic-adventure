@@ -21,7 +21,7 @@ var lto = [
     makeModel: "Chevrolet Blazer 2019",
     owner: "Lester Bernardino",
     address: "San Gabriel Sta. Maria Bulacan",
-    contact: "0915 5227 308"
+    contact: "09155227308"
   },
   {
     rfid: "21 ad 79 2e",
