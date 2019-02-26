@@ -19,9 +19,26 @@
 			raspberrypi1.subscribe("lailanie");
 
 			raspberrypi1.on("message", function (topic, payload) {
-				//console.log([topic, payload].join(": "));
+				console.log([topic, payload].join(": "));
 				var payload = JSON.parse(payload);
-				if (payload.rfid != "")
+
+				if (payload.isTrafficLightRed) {
+					$("#div-t1").attr("style", "background-color: green;");
+				} else {
+					$("#div-t1").attr("style", "background-color: red;");
+				}
+
+				if (payload.sensorReading == 0 && payload.lane == 1) {
+					$("#ul-t1-l1 li").attr("style", "background-color: blue;");
+				} else if (payload.sensorReading != 0 && payload.lane == 1) {
+					$("#ul-t1-l1 li").attr("style", "background-color: white;");
+				} else if (payload.sensorReading == 0 && payload.lane == 2) {
+					$("#ul-t1-l2 li").attr("style", "background-color: blue;");
+				} else if(payload.sensorReading != 0 && payload.lane == 2) {
+					$("#ul-t1-l2 li").attr("style", "background-color: white;");
+				}
+
+				if (payload.image != "")
 				if (payload.lane == 1) {
 					$("#img-t1-l1").attr("src", payload.image);
 					$("#rfid-t1-l1").text(payload.rfid);
@@ -49,9 +66,26 @@
 			raspberrypi2.subscribe("lailanie");
 
 			raspberrypi2.on("message", function (topic, payload) {
-				//console.log([topic, payload].join(": "));
+				console.log([topic, payload].join(": "));
 				var payload = JSON.parse(payload);
-				if (payload.rfid != "")
+
+				if (payload.isTrafficLightRed) {
+					$("#div-t2").attr("style", "background-color: green;");
+				} else {
+					$("#div-t2").attr("style", "background-color: red;");
+				}
+
+				if (payload.sensorReading == 0 && payload.lane == 1) {
+					$("#ul-t2-l1 li").attr("style", "background-color: blue;");
+				} else if (payload.sensorReading != 0 && payload.lane == 1) {
+					$("#ul-t2-l1 li").attr("style", "background-color: white;");
+				} else if (payload.sensorReading == 0 && payload.lane == 2) {
+					$("#ul-t2-l2 li").attr("style", "background-color: blue;");
+				} else if(payload.sensorReading != 0 && payload.lane == 2) {
+					$("#ul-t2-l2 li").attr("style", "background-color: white;");
+				}
+
+				if (payload.image != "")
 				if (payload.lane == 1) {
 					$("#img-t2-l1").attr("src", payload.image);
 					$("#rfid-t2-l1").text(payload.rfid);
@@ -79,9 +113,26 @@
 			raspberrypi3.subscribe("lailanie");
 
 			raspberrypi3.on("message", function (topic, payload) {
-				//console.log([topic, payload].join(": "));
+				console.log([topic, payload].join(": "));
 				var payload = JSON.parse(payload);
-				if (payload.rfid != "")
+
+				if (payload.isTrafficLightRed) {
+					$("#div-t3").attr("style", "background-color: green;");
+				} else {
+					$("#div-t3").attr("style", "background-color: red;");
+				}
+
+				if (payload.sensorReading == 0 && payload.lane == 1) {
+					$("#ul-t3-l1 li").attr("style", "background-color: blue;");
+				} else if (payload.sensorReading != 0 && payload.lane == 1) {
+					$("#ul-t3-l1 li").attr("style", "background-color: white;");
+				} else if (payload.sensorReading == 0 && payload.lane == 2) {
+					$("#ul-t3-l2 li").attr("style", "background-color: blue;");
+				} else if(payload.sensorReading != 0 && payload.lane == 2) {
+					$("#ul-t3-l2 li").attr("style", "background-color: white;");
+				}
+
+				if (payload.image != "")
 				if (payload.lane == 1) {
 					$("#img-t3-l1").attr("src", payload.image);
 					$("#rfid-t3-l1").text(payload.rfid);
@@ -121,12 +172,12 @@
 			}
 
 			function getTimeStamp() {
-				var currentdate = new Date(); 
-				var datetime = currentdate.getDate() + "/" + 
-				(currentdate.getMonth()+1) + "/" + 
-				currentdate.getFullYear() + " " + 
-				currentdate.getHours() + ":" + 
-				currentdate.getMinutes() + ":" + 
+				var currentdate = new Date();
+				var datetime = currentdate.getDate() + "/" +
+				(currentdate.getMonth()+1) + "/" +
+				currentdate.getFullYear() + " " +
+				currentdate.getHours() + ":" +
+				currentdate.getMinutes() + ":" +
 				currentdate.getSeconds();
 				return datetime;
 			}
@@ -134,14 +185,14 @@
 
 		<div class="container">
 			<div class="row">
-				<div class="col-md-4">
+				<div class="col-md-4" id="div-t1">
 					<h4>Traffic Light 1</h4>
 					<div class="row">
 						<div class="col-md-12">
 							<div class="row">
 								<div class="col-md-4"><img id="img-t1-l1" width="120" height="100"></img></div>
 								<div class="col-md-8">
-									<ul class="list-group">
+									<ul class="list-group" id="ul-t1-l1">
 										<li class="list-group-item">RFID: <span id="rfid-t1-l1"></span></li>
 										<li class="list-group-item">Plate: <span id="plate-t1-l1"></span></li>
 									  <li class="list-group-item">Owner: <span id="owner-t1-l1"></span></li>
@@ -155,7 +206,7 @@
 							<div class="row">
 								<div class="col-md-4"><img id="img-t1-l2" width="120" height="100"></img></div>
 								<div class="col-md-8">
-									<ul class="list-group">
+									<ul class="list-group" id="ul-t1-l2">
 										<li class="list-group-item">RFID: <span id="rfid-t1-l2"></span></li>
 										<li class="list-group-item">Plate: <span id="plate-t1-l2"></span></li>
 										<li class="list-group-item">Owner: <span id="owner-t1-l2"></span></li>
@@ -165,14 +216,14 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-md-4">
+				<div class="col-md-4" id="div-t2">
 					<h4>Traffic Light 2</h4>
 					<div class="row">
 						<div class="col-md-12">
 							<div class="row">
 								<div class="col-md-4"><img id="img-t2-l1" width="120" height="100"></img></div>
 								<div class="col-md-8">
-									<ul class="list-group">
+									<ul class="list-group" id="ul-t2-l1">
 										<li class="list-group-item">RFID: <span id="rfid-t2-l1"></span></li>
 										<li class="list-group-item">Plate: <span id="plate-t2-l1"></span></li>
 										<li class="list-group-item">Owner: <span id="owner-t2-l1"></span></li>
@@ -186,7 +237,7 @@
 							<div class="row">
 								<div class="col-md-4"><img id="img-t2-l2" width="120" height="100"></img></div>
 								<div class="col-md-8">
-									<ul class="list-group">
+									<ul class="list-group" id="ul-t2-l2">
 										<li class="list-group-item">RFID: <span id="rfid-t2-l2"></span></li>
 										<li class="list-group-item">Plate: <span id="plate-t2-l2"></span></li>
 										<li class="list-group-item">Owner: <span id="owner-t2-l2"></span></li>
@@ -196,14 +247,14 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-md-4">
+				<div class="col-md-4" id="div-t3">
 					<h4>Traffic Light 3</h4>
 					<div class="row">
 						<div class="col-md-12">
 							<div class="row">
 								<div class="col-md-4"><img id="img-t3-l1" width="120" height="100"></img></div>
 								<div class="col-md-8">
-									<ul class="list-group">
+									<ul class="list-group" id="ul-t3-l1">
 										<li class="list-group-item">RFID: <span id="rfid-t3-l1"></span></li>
 										<li class="list-group-item">Plate: <span id="plate-t3-l1"></span></li>
 										<li class="list-group-item">Owner: <span id="owner-t3-l1"></span></li>
@@ -217,7 +268,7 @@
 							<div class="row">
 								<div class="col-md-4"><img id="img-t3-l2" width="120" height="100"></img></div>
 								<div class="col-md-8">
-									<ul class="list-group">
+									<ul class="list-group" id="ul-t3-l2">
 										<li class="list-group-item">RFID: <span id="rfid-t3-l2"></span></li>
 										<li class="list-group-item">Plate: <span id="plate-t3-l2"></span></li>
 										<li class="list-group-item">Owner: <span id="owner-t3-l2"></span></li>
