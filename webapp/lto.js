@@ -13,7 +13,7 @@ var lto = [
     makeModel: "Suzuki Swift Sport 2019",
     owner: "Joseph Ivan Anahao",
     address: "Muzon San Jose Del Monte Bulacan",
-    contact: "09455865767"
+    contact: "09613179978"
   },
   {
     rfid: "f0 d3 f2 a2",
