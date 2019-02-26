@@ -1,19 +1,35 @@
-int greenRedInterval = 2000;
-int yellowInterval = 500;
+int greenRedInterval = 5000;
+int yellowInterval = 1000;
+
+int r1 = 13;
+int y1 = 12;
+int g1 = 11;
+
+int r2 = 52;
+int y2 = 50;
+int g2 = 48;
+
+int r3 = 53;
+int y3 = 51;
+int g3 = 49;
+
+int t1 = 34;
+int t2 = 36;
+int t3 = 38;
 
 void setup() {
-  pinMode(2, OUTPUT);
-  pinMode(3, OUTPUT);
-  pinMode(4, OUTPUT);
-  pinMode(5, OUTPUT);
-  pinMode(6, OUTPUT);
-  pinMode(7, OUTPUT);
-  pinMode(8, OUTPUT);
-  pinMode(9, OUTPUT);
-  pinMode(10, OUTPUT);
-  pinMode(46, OUTPUT);
-  pinMode(48, OUTPUT);
-  pinMode(50, OUTPUT);
+  pinMode(r1, OUTPUT);
+  pinMode(y1, OUTPUT);
+  pinMode(g1, OUTPUT);
+  pinMode(r2, OUTPUT);
+  pinMode(y2, OUTPUT);
+  pinMode(g2, OUTPUT);
+  pinMode(r3, OUTPUT);
+  pinMode(y3, OUTPUT);
+  pinMode(g3, OUTPUT);
+  pinMode(t1, OUTPUT);
+  pinMode(t2, OUTPUT);
+  pinMode(t3, OUTPUT);
 }
 
 void loop() {
@@ -43,59 +59,59 @@ void loop() {
     delay(yellowInterval);
 }
 
-void green(int trafficLight) {
+void red(int trafficLight) {
   if (trafficLight == 1) {
-    digitalWrite(2, HIGH);
-    digitalWrite(3, LOW);
-    digitalWrite(4, LOW);
+    digitalWrite(r1, HIGH);
+    digitalWrite(y1, LOW);
+    digitalWrite(g1, LOW);
   } else if (trafficLight == 2) {
-    digitalWrite(5, HIGH);
-    digitalWrite(6, LOW);
-    digitalWrite(7, LOW);
+    digitalWrite(r2, HIGH);
+    digitalWrite(y2, LOW);
+    digitalWrite(g2, LOW);
   } else if (trafficLight ==3) {
-    digitalWrite(8, HIGH);
-    digitalWrite(9, LOW);
-    digitalWrite(10, LOW);
+    digitalWrite(r3, HIGH);
+    digitalWrite(y3, LOW);
+    digitalWrite(g3, LOW);
   }
 }
 
 void yellow(int trafficLight) {
   if (trafficLight == 1) {
-    digitalWrite(2, LOW);
-    digitalWrite(3, HIGH);
-    digitalWrite(4, LOW);
+    digitalWrite(r1, LOW);
+    digitalWrite(y1, HIGH);
+    digitalWrite(g1, LOW);
   } else if (trafficLight == 2) {
-    digitalWrite(5, LOW);
-    digitalWrite(6, HIGH);
-    digitalWrite(7, LOW);
+    digitalWrite(r2, LOW);
+    digitalWrite(y2, HIGH);
+    digitalWrite(g2, LOW);
   } else if (trafficLight ==3) {
-    digitalWrite(8, LOW);
-    digitalWrite(9, HIGH);
-    digitalWrite(10, LOW);
+    digitalWrite(r3, LOW);
+    digitalWrite(y3, HIGH);
+    digitalWrite(g3, LOW);
   }
 }
 
-void red(int trafficLight) {
+void green(int trafficLight) {
   if (trafficLight == 1) {
-    digitalWrite(2, LOW);
-    digitalWrite(3, LOW);
-    digitalWrite(4, HIGH);
-    digitalWrite(46, HIGH); // relay
-    digitalWrite(48, LOW); // relay
-    digitalWrite(50, LOW); // relay
+    digitalWrite(r1, LOW);
+    digitalWrite(y1, LOW);
+    digitalWrite(g1, HIGH);
+    digitalWrite(t1, LOW); // relay
+    digitalWrite(t2, HIGH); // relay
+    digitalWrite(t3, HIGH); // relay
   } else if (trafficLight == 2) {
-    digitalWrite(5, LOW);
-    digitalWrite(6, LOW);
-    digitalWrite(7, HIGH);
-    digitalWrite(46, LOW); // relay
-    digitalWrite(48, HIGH); // relay
-    digitalWrite(50, LOW); // relay
+    digitalWrite(r2, LOW);
+    digitalWrite(y2, LOW);
+    digitalWrite(g2, HIGH);
+    digitalWrite(t1, HIGH); // relay
+    digitalWrite(t2, LOW); // relay
+    digitalWrite(t3, HIGH); // relay
   } else if (trafficLight ==3) {
-    digitalWrite(8, LOW);
-    digitalWrite(9, LOW);
-    digitalWrite(10, HIGH);
-    digitalWrite(46, LOW); // relay
-    digitalWrite(48, LOW); // relay
-    digitalWrite(50, HIGH); // relay
+    digitalWrite(r3, LOW);
+    digitalWrite(y3, LOW);
+    digitalWrite(g3, HIGH);
+    digitalWrite(t1, HIGH); // relay
+    digitalWrite(t2, HIGH); // relay
+    digitalWrite(t3, LOW); // relay
   }
 }
