@@ -19,7 +19,7 @@
 			raspberrypi1.subscribe("lailanie");
 
 			raspberrypi1.on("message", function (topic, payload) {
-				console.log([topic, payload].join(": "));
+				//console.log([topic, payload].join(": "));
 				var payload = JSON.parse(payload);
 
 				if (payload.isTrafficLightRed) {
@@ -47,6 +47,7 @@
 							$("#plate-t1-l1").text(lto[x].plate);
 							$("#owner-t1-l1").text(lto[x].owner);
 							insertRow(payload.rfid.trim(), lto[x].plate, lto[x].makeModel, lto[x].owner, lto[x].address, lto[x].contact, payload.image);
+							sendSMS(lto[x].contact);
 						}
 					}
 				} else if (payload.lane == 2) {
@@ -57,6 +58,7 @@
 							$("#plate-t1-l2").text(lto[x].plate);
 							$("#owner-t1-l2").text(lto[x].owner);
 							insertRow(payload.rfid.trim(), lto[x].plate, lto[x].makeModel, lto[x].owner, lto[x].address, lto[x].contact, payload.image);
+							sendSMS(lto[x].contact);
 						}
 					}
 				}
@@ -66,7 +68,7 @@
 			raspberrypi2.subscribe("lailanie");
 
 			raspberrypi2.on("message", function (topic, payload) {
-				console.log([topic, payload].join(": "));
+				//console.log([topic, payload].join(": "));
 				var payload = JSON.parse(payload);
 
 				if (payload.isTrafficLightRed) {
@@ -94,6 +96,7 @@
 							$("#plate-t2-l1").text(lto[x].plate);
 							$("#owner-t2-l1").text(lto[x].owner);
 							insertRow(payload.rfid.trim(), lto[x].plate, lto[x].makeModel, lto[x].owner, lto[x].address, lto[x].contact, payload.image);
+							sendSMS(lto[x].contact);
 						}
 					}
 				} else if (payload.lane == 2) {
@@ -104,6 +107,7 @@
 							$("#plate-t2-l2").text(lto[x].plate);
 							$("#owner-t2-l2").text(lto[x].owner);
 							insertRow(payload.rfid.trim(), lto[x].plate, lto[x].makeModel, lto[x].owner, lto[x].address, lto[x].contact, payload.image);
+							sendSMS(lto[x].contact);
 						}
 					}
 				}
@@ -113,7 +117,7 @@
 			raspberrypi3.subscribe("lailanie");
 
 			raspberrypi3.on("message", function (topic, payload) {
-				console.log([topic, payload].join(": "));
+				//console.log([topic, payload].join(": "));
 				var payload = JSON.parse(payload);
 
 				if (payload.isTrafficLightRed) {
@@ -141,6 +145,7 @@
 							$("#plate-t3-l1").text(lto[x].plate);
 							$("#owner-t3-l1").text(lto[x].owner);
 							insertRow(payload.rfid.trim(), lto[x].plate, lto[x].makeModel, lto[x].owner, lto[x].address, lto[x].contact, payload.image);
+							sendSMS(lto[x].contact);
 						}
 					}
 				} else if (payload.lane == 2) {
@@ -151,6 +156,7 @@
 							$("#plate-t3-l2").text(lto[x].plate);
 							$("#owner-t3-l2").text(lto[x].owner);
 							insertRow(payload.rfid.trim(), lto[x].plate, lto[x].makeModel, lto[x].owner, lto[x].address, lto[x].contact, payload.image);
+							sendSMS(lto[x].contact);
 						}
 					}
 				}
@@ -180,6 +186,10 @@
 				currentdate.getMinutes() + ":" +
 				currentdate.getSeconds();
 				return datetime;
+			}
+
+			function sendSMS(number) {
+				raspberrypi1.publish('lailanie/gsm', number + 'Attention! GoodDay. This is traffic officer Malolos City, Bulacan. We would like you to inform that you have violated for beating the red light along Mc Arthur Highway.');
 			}
 		</script>
 

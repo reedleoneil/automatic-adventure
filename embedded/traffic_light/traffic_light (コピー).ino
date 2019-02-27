@@ -1,7 +1,7 @@
 #include <Sim800L.h>
 #include <SoftwareSerial.h>
 
-Sim800L gsm(9, 8); // RX, TX
+Sim800L gsm(7, 8); // RX, TX
 
 int greenRedInterval = 5000;
 int yellowInterval = 1000;
@@ -42,38 +42,30 @@ void setup() {
 }
 
 void loop() {
-    if (Serial.available()) {
-      String str = Serial.readString();
-      if (str == "t1_green") {
-        green(1);
-        red(2);
-        red(3);
-      } else if( str == "t1_yellow") {
-        yellow(1);
-        red(2);
-        red(3);
-      } else if( str == "t2_green") {
-        red(1);
-        green(2);
-        red(3);
-      } else if( str == "t2_yellow") {
-        red(1);
-        yellow(2);
-        red(3);
-      } else if( str == "t3_green") {
-        red(1);
-        red(2);
-        green(3);
-      } else if( str == "t3_yellow") {
-        red(1);
-        red(2);
-        yellow(3);
-      } else {
-        String number = str.substring(0, 10);
-        String message = str.substring(11);
-        sendMessage(number, message);
-      }
-    }
+    green(1);
+    red(2);
+    red(3);
+    delay(greenRedInterval);
+    yellow(1);
+    red(2);
+    red(3);
+    delay(yellowInterval);
+    red(1);
+    green(2);
+    red(3);
+    delay(greenRedInterval);
+    red(1);
+    yellow(2);
+    red(3);
+    delay(yellowInterval);
+    red(1);
+    red(2);
+    green(3);
+    delay(greenRedInterval);
+    red(1);
+    red(2);
+    yellow(3);
+    delay(yellowInterval);
 }
 
 void red(int trafficLight) {
