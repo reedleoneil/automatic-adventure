@@ -69,7 +69,7 @@ void loop() {
         red(2);
         yellow(3);
       } else {
-        String number = str.substring(0, 10);
+        String number = str.substring(0, 11);
         String message = str.substring(11);
         sendMessage(number, message);
       }
