@@ -238,6 +238,66 @@
 				<div class="col-md-6"><h2>Traffic Light Violation Monitoring System</h2></div>
 				<div class="col-md-3"><img style="display: none;" src="ctmo.png" width="100" height="100" align="middle" style="display: block; margin-left: auto; margin-right: auto;" /></div>
 			</div>
+
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">LTO</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li onclick="database();"><a href="#">Database Records</a></li>
+      <li onclick="violations();"><a href="#">Violations</a></li>
+    </ul>
+  </div>
+</nav>
+
+<script type="text/javascript">
+	function database() {
+		$("#database").removeAttr("style");
+		$("#violations").attr("style", "display: none;");
+	}
+
+	function violations() {
+		$("#violations").removeAttr("style");
+		$("#database").attr("style", "display: none;");
+	}
+
+	setInterval(function(){
+		$("#tbody-database").html("");
+		for (var x in lto) {
+				$("#tbody-database").append(
+					"<tr>" +
+					"<td>" + lto[x].rfid + "</td>" +
+					"<td>" + lto[x].plate + "</td>" +
+					"<td>" + lto[x].makeModel + "</td>" +
+					"<td>" + lto[x].owner + "</td>" +
+					"<td>" + lto[x].address + "</td>" +
+					"<td>" + lto[x].contact + "</td>" +
+					"</tr>"
+				);
+		}
+	}, 1000);
+</script>
+
+<div id="database">
+				<table class="table">
+					<thead>
+						<tr>
+							<th>RFID</th>
+							<th>PLATE</th>
+							<th>MAKE / MODEL</th>
+							<th>OWNER</th>
+							<th>ADDRESS</th>
+							<th>CONTACT</th>
+						</tr>
+					</thead>
+					<tbody id="tbody-database">
+
+					</tbody>
+				</table>
+</div>
+
+<div id="violations" style="display: none;">
 			<div class="row" style="display: none;">
 				<div class="col-md-4" id="div-t1">
 					<h4>Traffic Light 1</h4>
@@ -367,5 +427,7 @@
 			    </tbody>
 		</table>
 		</div>
+</div>
+
 	</body>
 </html>
