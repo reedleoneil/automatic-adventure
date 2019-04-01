@@ -1,0 +1,371 @@
+<html>
+	<head>
+		<script src="mqtt.js"></script>
+		<script src="mqttws31.js"></script>
+		<script src="jquery.js"></script>
+		<script src="bootstrap.js"></script>
+		<script src="lto.js"></script>
+ 		<link rel="stylesheet" type="text/css" href="bootstrap.css">
+		<style>
+			h4 {
+				text-align: center;
+				font-weight: bolder;
+			}
+		</style>
+	</head>
+	<body>
+		<script>
+			var raspberrypi1 = mqtt.connect("ws://192.168.1.100:1884");
+			raspberrypi1.subscribe("lailanie/lto");
+
+			raspberrypi1.on("message", function (topic, payload) {
+				//console.log([topic, payload].join(": "));
+				var payload = JSON.parse(payload);
+
+				insertRow(payload);
+
+				if (payload.isTrafficLightRed) {
+					$("#div-t1").attr("style", "background-color: green;");
+				} else {
+					$("#div-t1").attr("style", "background-color: red;");
+				}
+
+				if (payload.sensorReading == 0 && payload.lane == 1) {
+					$("#ul-t1-l1 li").attr("style", "background-color: blue;");
+				} else if (payload.sensorReading != 0 && payload.lane == 1) {
+					$("#ul-t1-l1 li").attr("style", "background-color: white;");
+				} else if (payload.sensorReading == 0 && payload.lane == 2) {
+					$("#ul-t1-l2 li").attr("style", "background-color: blue;");
+				} else if(payload.sensorReading != 0 && payload.lane == 2) {
+					$("#ul-t1-l2 li").attr("style", "background-color: white;");
+				}
+
+				if (payload.image != "")
+				if (payload.lane == 1) {
+					$("#img-t1-l1").attr("src", payload.image);
+					$("#rfid-t1-l1").text(payload.rfid);
+					for (var x in lto) {
+ 						if (lto[x].rfid.trim() == payload.rfid.trim()) {
+							$("#plate-t1-l1").text(lto[x].plate);
+							$("#owner-t1-l1").text(lto[x].owner);
+							//insertRow(payload.rfid.trim(), lto[x].plate, lto[x].makeModel, lto[x].owner, lto[x].address, lto[x].contact, payload.image);
+							//sendSMS(lto[x].contact);
+							setBtnValue('btn-t1-l1', payload);
+						}
+					}
+				} else if (payload.lane == 2) {
+					$("#img-t1-l2").attr("src", payload.image);
+					$("#rfid-t1-l2").text(payload.rfid);
+					for (var x in lto) {
+ 						if (lto[x].rfid.trim() == payload.rfid.trim()) {
+							$("#plate-t1-l2").text(lto[x].plate);
+							$("#owner-t1-l2").text(lto[x].owner);
+							//insertRow(payload.rfid.trim(), lto[x].plate, lto[x].makeModel, lto[x].owner, lto[x].address, lto[x].contact, payload.image);
+							//sendSMS(lto[x].contact);
+							setBtnValue('btn-t1-l2', payload);
+						}
+					}
+				}
+			})
+
+			var raspberrypi2 = mqtt.connect("ws://192.168.1.101:1884");
+			raspberrypi2.subscribe("lailanie");
+
+			raspberrypi2.on("message", function (topic, payload) {
+				//console.log([topic, payload].join(": "));
+				var payload = JSON.parse(payload);
+
+				if (payload.isTrafficLightRed) {
+					$("#div-t2").attr("style", "background-color: green;");
+				} else {
+					$("#div-t2").attr("style", "background-color: red;");
+				}
+
+				if (payload.sensorReading == 0 && payload.lane == 1) {
+					$("#ul-t2-l1 li").attr("style", "background-color: blue;");
+				} else if (payload.sensorReading != 0 && payload.lane == 1) {
+					$("#ul-t2-l1 li").attr("style", "background-color: white;");
+				} else if (payload.sensorReading == 0 && payload.lane == 2) {
+					$("#ul-t2-l2 li").attr("style", "background-color: blue;");
+				} else if(payload.sensorReading != 0 && payload.lane == 2) {
+					$("#ul-t2-l2 li").attr("style", "background-color: white;");
+				}
+
+				if (payload.image != "")
+				if (payload.lane == 1) {
+					$("#img-t2-l1").attr("src", payload.image);
+					$("#rfid-t2-l1").text(payload.rfid);
+					for (var x in lto) {
+ 						if (lto[x].rfid.trim() == payload.rfid.trim()) {
+							$("#plate-t2-l1").text(lto[x].plate);
+							$("#owner-t2-l1").text(lto[x].owner);
+							//insertRow(payload.rfid.trim(), lto[x].plate, lto[x].makeModel, lto[x].owner, lto[x].address, lto[x].contact, payload.image);
+							//sendSMS(lto[x].contact);
+							setBtnValue('btn-t2-l1', payload);
+						}
+					}
+				} else if (payload.lane == 2) {
+					$("#img-t2-l2").attr("src", payload.image);
+					$("#rfid-t2-l2").text(payload.rfid);
+					for (var x in lto) {
+ 						if (lto[x].rfid.trim() == payload.rfid.trim()) {
+							$("#plate-t2-l2").text(lto[x].plate);
+							$("#owner-t2-l2").text(lto[x].owner);
+							//insertRow(payload.rfid.trim(), lto[x].plate, lto[x].makeModel, lto[x].owner, lto[x].address, lto[x].contact, payload.image);
+							//sendSMS(lto[x].contact);
+							setBtnValue('btn-t2-l2', payload);
+						}
+					}
+				}
+			})
+
+			var raspberrypi3 = mqtt.connect("ws://192.168.1.102:1884");
+			raspberrypi3.subscribe("lailanie");
+
+			raspberrypi3.on("message", function (topic, payload) {
+				//console.log([topic, payload].join(": "));
+				var payload = JSON.parse(payload);
+
+				if (payload.isTrafficLightRed) {
+					$("#div-t3").attr("style", "background-color: green;");
+				} else {
+					$("#div-t3").attr("style", "background-color: red;");
+				}
+
+				if (payload.sensorReading == 0 && payload.lane == 1) {
+					$("#ul-t3-l1 li").attr("style", "background-color: blue;");
+				} else if (payload.sensorReading != 0 && payload.lane == 1) {
+					$("#ul-t3-l1 li").attr("style", "background-color: white;");
+				} else if (payload.sensorReading == 0 && payload.lane == 2) {
+					$("#ul-t3-l2 li").attr("style", "background-color: blue;");
+				} else if(payload.sensorReading != 0 && payload.lane == 2) {
+					$("#ul-t3-l2 li").attr("style", "background-color: white;");
+				}
+
+				if (payload.image != "")
+				if (payload.lane == 1) {
+					$("#img-t3-l1").attr("src", payload.image);
+					$("#rfid-t3-l1").text(payload.rfid);
+					for (var x in lto) {
+ 						if (lto[x].rfid.trim() == payload.rfid.trim()) {
+							$("#plate-t3-l1").text(lto[x].plate);
+							$("#owner-t3-l1").text(lto[x].owner);
+							//insertRow(payload.rfid.trim(), lto[x].plate, lto[x].makeModel, lto[x].owner, lto[x].address, lto[x].contact, payload.image);
+							//sendSMS(lto[x].contact);
+							setBtnValue('btn-t3-l1', payload);
+						}
+					}
+				} else if (payload.lane == 2) {
+					$("#img-t3-l2").attr("src", payload.image);
+					$("#rfid-t3-l2").text(payload.rfid);
+					for (var x in lto) {
+ 						if (lto[x].rfid.trim() == payload.rfid.trim()) {
+							$("#plate-t3-l2").text(lto[x].plate);
+							$("#owner-t3-l2").text(lto[x].owner);
+							//insertRow(payload.rfid.trim(), lto[x].plate, lto[x].makeModel, lto[x].owner, lto[x].address, lto[x].contact, payload.image);
+							//sendSMS(lto[x].contact);
+							setBtnValue('btn-t3-l2', payload);
+						}
+					}
+				}
+			})
+
+			function insertRow(payload) {
+			//function insertRow(rfid, plate, makeModel, owner, address, contact, image) {
+				for (var x in lto) {
+					if (lto[x].rfid.trim() == payload.rfid.trim()) {
+						$("#tbody-violations").prepend(
+							"<tr>" +
+							"<td><ul class='list-group'><li class='list-group-item'>RFID: " + payload.rfid + "</li><li class='list-group-item'><img src='" + payload.image + "' width='120' height='100' /></li><li class='list-group-item'>DATETIME: " + getTimeStamp() + "</li></ul></td>" +
+							"<td><ul class='list-group'>" +
+								"<li class='list-group-item'>PLATE: <input type='text' class='plate' value='" + lto[x].plate + "' /></li>" +
+								"<li class='list-group-item'>MAKE/MODEL: <input type='text' class='makeModel' value='" + lto[x].makeModel + "' /></li>" +
+								"<li class='list-group-item'>OWNER: <input type='text' class='owner' value='" + lto[x].owner + "'/></li>" +
+								"<li class='list-group-item'>ADDRESS: <input type='text' class='address' value='" + lto[x].address + "'/></li>" +
+								"<li class='list-group-item'>CONTACT #: <input type='text' class='contact' value='" + lto[x].contact + "'/></li>" +
+							"</ul></td>" +
+							"<td><button value='" + JSON.stringify(payload) + "' onclick='sendToCTMO(this.value, this);'>VERIFY AND SEND DETAILS</button></td>" +
+										"</tr>"
+						);
+					}
+				}
+			}
+
+			function sendToCTMO(payload, dom) {
+				var plate = $(dom).closest('tr').find('.plate').val();
+				var makeModel = $(dom).closest('tr').find('.makeModel').val();
+				var owner = $(dom).closest('tr').find('.owner').val();
+				var address = $(dom).closest('tr').find('.address').val();
+				var contact = $(dom).closest('tr').find('.contact').val();
+				payload = JSON.parse(payload);
+				payload.plate = plate;
+				payload.makeModel = makeModel;
+				payload.owner = owner;
+				payload.address = address;
+				payload.contact = contact;
+				raspberrypi1.publish('lailanie/ctmo', JSON.stringify(payload));
+				$(dom).closest('tr').remove();
+			}
+
+			function getTimeStamp() {
+				var currentdate = new Date();
+				var datetime = currentdate.getDate() + "/" +
+				(currentdate.getMonth()+1) + "/" +
+				currentdate.getFullYear() + " " +
+				currentdate.getHours() + ":" +
+				currentdate.getMinutes() + ":" +
+				currentdate.getSeconds();
+				return datetime;
+			}
+
+			function sendSMS(number) {
+				raspberrypi1.publish('lailanie/gsm', number + 'Attention! GoodDay. This is traffic officer Malolos City, Bulacan. We would like you to inform that you have violated for beating the red light along Mc Arthur Highway.');
+			}
+
+			function sendToLTO(payload) {
+				raspberrypi1.publish('lailanie/lto', payload);
+				//alert(payload);
+			}
+
+			function setBtnValue(btn, payload) {
+				$("#" + btn).val(JSON.stringify(payload));
+			}
+		</script>
+
+		<div class="container">
+			<div class="row">
+				<div class="col-md-3"><img src="lto.jpg" width="100" height="100" style="display: block; margin-left: auto; margin-right: auto;" /></div>
+				<div class="col-md-6"><h2>Traffic Light Violation Monitoring System</h2></div>
+				<div class="col-md-3"><img style="display: none;" src="ctmo.png" width="100" height="100" align="middle" style="display: block; margin-left: auto; margin-right: auto;" /></div>
+			</div>
+			<div class="row" style="display: none;">
+				<div class="col-md-4" id="div-t1">
+					<h4>Traffic Light 1</h4>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="row">
+								<div class="col-md-4"><img id="img-t1-l1" width="120" height="100"></img></div>
+								<div class="col-md-8">
+									<ul class="list-group" id="ul-t1-l1">
+										<li class="list-group-item">RFID: <span id="rfid-t1-l1"></span></li>
+										<!--<li class="list-group-item">Plate: <span id="plate-t1-l1"></span></li>
+									  <li class="list-group-item">Owner: <span id="owner-t1-l1"></span></li>-->
+										<li class="list-group-item"><button id="btn-t1-l1" name="name" type="submit" onclick="sendToLTO(this.value);">Send to LTO</button></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="row">
+								<div class="col-md-4"><img id="img-t1-l2" width="120" height="100"></img></div>
+								<div class="col-md-8">
+									<ul class="list-group" id="ul-t1-l2">
+										<li class="list-group-item">RFID: <span id="rfid-t1-l2"></span></li>
+										<!--<li class="list-group-item">Plate: <span id="plate-t1-l2"></span></li>
+										<li class="list-group-item">Owner: <span id="owner-t1-l2"></span></li>-->
+										<li class="list-group-item"><button id="btn-t1-l2" name="name" type="submit" onclick="alert(this.value);">Send to LTO</button></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4" id="div-t2">
+					<h4>Traffic Light 2</h4>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="row">
+								<div class="col-md-4"><img id="img-t2-l1" width="120" height="100"></img></div>
+								<div class="col-md-8">
+									<ul class="list-group" id="ul-t2-l1">
+										<li class="list-group-item">RFID: <span id="rfid-t2-l1"></span></li>
+										<!--<li class="list-group-item">Plate: <span id="plate-t2-l1"></span></li>
+										<li class="list-group-item">Owner: <span id="owner-t2-l1"></span></li>-->
+										<li class="list-group-item"><button id="btn-t2-l1" name="name" type="submit" onclick="alert(this.value);">Send to LTO</button></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="row">
+								<div class="col-md-4"><img id="img-t2-l2" width="120" height="100"></img></div>
+								<div class="col-md-8">
+									<ul class="list-group" id="ul-t2-l2">
+										<li class="list-group-item">RFID: <span id="rfid-t2-l2"></span></li>
+										<!--<li class="list-group-item">Plate: <span id="plate-t2-l2"></span></li>
+										<li class="list-group-item">Owner: <span id="owner-t2-l2"></span></li>-->
+										<li class="list-group-item"><button id="btn-t2-l2" name="name" type="submit" onclick="alert(this.value);">Send to LTO</button></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4" id="div-t3">
+					<h4>Traffic Light 3</h4>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="row">
+								<div class="col-md-4"><img id="img-t3-l1" width="120" height="100"></img></div>
+								<div class="col-md-8">
+									<ul class="list-group" id="ul-t3-l1">
+										<li class="list-group-item">RFID: <span id="rfid-t3-l1"></span></li>
+										<!--<li class="list-group-item">Plate: <span id="plate-t3-l1"></span></li>
+										<li class="list-group-item">Owner: <span id="owner-t3-l1"></span></li>-->
+										<li class="list-group-item"><button id="btn-t3-l1" name="name" type="submit" onclick="alert(this.value);">Send to LTO</button></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="row">
+								<div class="col-md-4"><img id="img-t3-l2" width="120" height="100"></img></div>
+								<div class="col-md-8">
+									<ul class="list-group" id="ul-t3-l2">
+										<li class="list-group-item">RFID: <span id="rfid-t3-l2"></span></li>
+										<!--<li class="list-group-item">Plate: <span id="plate-t3-l2"></span></li>
+										<li class="list-group-item">Owner: <span id="owner-t3-l2"></span></li>-->
+										<li class="list-group-item"><button id="btn-t3-l2" name="name" type="submit" onclick="alert(this.value);">Send to LTO</button></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<h4>Violations</h4>
+			<table class="table">
+			    <thead>
+			      <tr>
+				<th>RFID / IMAGE / DATE</th>
+				<!--<th>PLATE #</th>
+				<th>MAKE/MODEL</th>
+				<th>OWNER</th>
+				<th>ADRESS</th>
+				<th>CONTACT #</th>-->
+				<th>DETAILS</th>
+				<th></th>
+			      </tr>
+			    </thead>
+			    <tbody id="tbody-violations">
+			      <!--<tr>
+				<td>9a 23 b3 c1</td>
+				<td>XCS 4123</td>
+				<td>Honda Civic Type R 2019</td>
+				<td>Red Pascual</td>
+				<td>Minalin Pampanga</td>
+				<td>0916 362 4205</td>
+				<td>Feb 14, 2019 10:10 AM</td>
+				<td>Link</td>
+			      </tr>-->
+			    </tbody>
+		</table>
+		</div>
+	</body>
+</html>
